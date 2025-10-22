@@ -224,6 +224,37 @@ namespace Application.Tests
             Assert.Equal("Pagada", cuentaDesdeDb.Estado); 
         }
 
+        [Fact]
+        public async Task Cuenta_DebeTenerPropiedadPedidoAccesible()
+        {
+            // Este test fuerza la cobertura de la línea de la propiedad Pedido
+            var cuenta = new Cuenta
+            {
+                PedidoId = 1,
+                Total = 10000,
+                MetodoPago = "Efectivo",
+                Estado = "Pendiente"
+            };
+
+            // Acceder explícitamente a la propiedad para cubrir la línea
+            Assert.Null(cuenta.Pedido);
+            Assert.Equal(1, cuenta.PedidoId);
+        }
+
+        [Fact]
+        public async Task Cuenta_DebeTenerEstadoPorDefecto_Pendiente()
+        {
+            // Este test fuerza la cobertura de la línea de inicialización de Estado
+            var cuenta = new Cuenta
+            {
+                Total = 5000,
+                MetodoPago = "QR"
+            };
+
+            // Acceder explícitamente a Estado para cubrir la línea de inicialización
+            Assert.Equal("Pendiente", cuenta.Estado);
+        }
+
     }
 
 }

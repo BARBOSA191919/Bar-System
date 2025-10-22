@@ -210,9 +210,28 @@ for (i = 0, l = charts.length; i < l; i++) {
 }
 
 var assemblies = [
+  {
+    "name": "BarSystem",
+    "classes": [
+      { "name": "BarSystem.Api.Controllers.CuentasController", "rp": "BarSystem_CuentasController.html", "cl": 39, "ucl": 0, "cal": 39, "tl": 77, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Api.Controllers.DetallePedidoController", "rp": "BarSystem_DetallePedidoController.html", "cl": 43, "ucl": 0, "cal": 43, "tl": 85, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Api.Controllers.MesasController", "rp": "BarSystem_MesasController.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 36, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Api.Controllers.PedidosController", "rp": "BarSystem_PedidosController.html", "cl": 43, "ucl": 0, "cal": 43, "tl": 78, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Api.Controllers.ProductosController", "rp": "BarSystem_ProductosController.html", "cl": 37, "ucl": 1, "cal": 38, "tl": 77, "cb": 7, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Api.Controllers.UsuariosController", "rp": "BarSystem_UsuariosController.html", "cl": 29, "ucl": 0, "cal": 29, "tl": 61, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Application.DTOs.UsuarioLoginDto", "rp": "BarSystem_UsuarioLoginDto.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Application.DTOs.UsuarioRegisterDto", "rp": "BarSystem_UsuarioRegisterDto.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Domain.Entities.Cuenta", "rp": "BarSystem_Cuenta.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Domain.Entities.DetallePedido", "rp": "BarSystem_DetallePedido.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Domain.Entities.Mesa", "rp": "BarSystem_Mesa.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Domain.Entities.Pedido", "rp": "BarSystem_Pedido.html", "cl": 6, "ucl": 1, "cal": 7, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Domain.Entities.Producto", "rp": "BarSystem_Producto.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Domain.Entities.Usuario", "rp": "BarSystem_Usuario.html", "cl": 4, "ucl": 1, "cal": 5, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "BarSystem.Infrastructure.BarContext", "rp": "BarSystem_BarContext.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+    ]},
 ];
 
-var metrics = [];
+var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" }, { "name": "Cyclomatic complexity", "abbreviation": "cc", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" }, { "name": "Line coverage", "abbreviation": "cov", "explanationUrl": "https://en.wikipedia.org/wiki/Code_coverage" }, { "name": "Branch coverage", "abbreviation": "bcov", "explanationUrl": "https://en.wikipedia.org/wiki/Code_coverage" }];
 
 var historicCoverageExecutionTimes = [];
 

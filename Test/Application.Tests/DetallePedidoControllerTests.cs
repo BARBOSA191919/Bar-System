@@ -148,5 +148,150 @@ namespace Application.Tests
             // El controlador debe retornar un resultado, no lanzar excepción
             Assert.IsType<ActionResult<DetallePedido>>(result);
         }
+        // 🔹 Test: Obtener detalle por ID existente
+        [Fact]
+        public async Task GetDetalle_DebeRetornarDetalle_CuandoExiste()
+        {
+            var options = GetDbOptions();
+            using var context = new BarContext(options);
+
+            var pedido = new Pedido { MesaId = 1, Total = 0 };
+            var producto = new Producto { Nombre = "Cerveza", Precio = 5000, Categoria = "Bebida" };
+            await context.Pedidos.AddAsync(pedido);
+            await context.Productos.AddAsync(producto);
+            await context.SaveChangesAsync();
+
+            var detalle = new DetallePedido
+            {
+                PedidoId = pedido.Id,
+                ProductoId = producto.Id,
+                Cantidad = 1,
+                Subtotal = 5000
+            };
+            await context.DetallesPedido.AddAsync(detalle);
+            await context.SaveChangesAsync();
+
+            var controller = new DetallePedidoController(context);
+            var result = await controller.GetDetalle(detalle.Id);
+
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var detalleRetornado = Assert.IsType<DetallePedido>(okResult.Value);
+            Assert.Equal(detalle.Id, detalleRetornado.Id);
+            Assert.NotNull(detalleRetornado.Pedido);
+            Assert.NotNull(detalleRetornado.Producto);
+        }
+
+        // 🔹 Test: Obtener detalle por ID inexistente
+        [Fact]
+        public async Task GetDetalle_DebeRetornarNotFound_CuandoNoExiste()
+        {
+            var options = GetDbOptions();
+            using var context = new BarContext(options);
+            var controller = new DetallePedidoController(context);
+
+            var result = await controller.GetDetalle(999);
+
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        // 🔹 Test: Actualizar detalle con ID mismatch
+        [Fact]
+        public async Task UpdateDetalle_DebeRetornarBadRequest_SiIdNoCoincide()
+        {
+            var options = GetDbOptions();
+            using var context = new BarContext(options);
+            var controller = new DetallePedidoController(context);
+
+            var detalle = new DetallePedido { Id = 1, PedidoId = 1, ProductoId = 1, Cantidad = 1, Subtotal = 1000 };
+
+            var result = await controller.UpdateDetalle(2, detalle); // ID en URL ≠ ID en body
+
+            Assert.IsType<BadRequestResult>(result);
+        }
+
+        // 🔹 Test: Actualizar detalle inexistente
+        [Fact]
+        public async Task UpdateDetalle_DebeRetornarNotFound_SiNoExiste()
+        {
+            var options = GetDbOptions();
+            using var context = new BarContext(options);
+            var controller = new DetallePedidoController(context);
+
+            var detalle = new DetallePedido { Id = 999, PedidoId = 1, ProductoId = 1, Cantidad = 1, Subtotal = 1000 };
+
+            var result = await controller.UpdateDetalle(999, detalle);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task UpdateDetalle_DebeActualizarDetalle_CuandoExiste()
+        {
+            var options = GetDbOptions();
+            using var context = new BarContext(options);
+
+            var pedido = new Pedido { MesaId = 1, Total = 0 };
+            var producto = new Producto { Nombre = "Hamburguesa", Precio = 12000, Categoria = "Comida" };
+            await context.Pedidos.AddAsync(pedido);
+            await context.Productos.AddAsync(producto);
+            await context.SaveChangesAsync();
+
+            var detalle = new DetallePedido
+            {
+                PedidoId = pedido.Id,
+                ProductoId = producto.Id,
+                Cantidad = 1,
+                Subtotal = 12000
+            };
+            await context.DetallesPedido.AddAsync(detalle);
+            await context.SaveChangesAsync();
+
+            // En lugar de crear una nueva instancia, modificamos la existente
+            detalle.Cantidad = 3;
+            detalle.Subtotal = 36000;
+
+            var controller = new DetallePedidoController(context);
+            var result = await controller.UpdateDetalle(detalle.Id, detalle);
+
+            Assert.IsType<NoContentResult>(result);
+
+            var detalleEnDb = await context.DetallesPedido.FindAsync(detalle.Id);
+            Assert.Equal(3, detalleEnDb.Cantidad);
+            Assert.Equal(36000, detalleEnDb.Subtotal);
+        }
+
+        // 🔹 Test: Verificar que GetDetalles incluye relaciones
+        [Fact]
+        public async Task GetDetalles_DebeIncluirRelacionesPedidoYProducto()
+        {
+            var options = GetDbOptions();
+            using var context = new BarContext(options);
+
+            var pedido = new Pedido { MesaId = 1, Total = 0 };
+            var producto = new Producto { Nombre = "Cerveza", Precio = 5000, Categoria = "Bebida" };
+            await context.Pedidos.AddAsync(pedido);
+            await context.Productos.AddAsync(producto);
+            await context.SaveChangesAsync();
+
+            await context.DetallesPedido.AddAsync(new DetallePedido
+            {
+                PedidoId = pedido.Id,
+                ProductoId = producto.Id,
+                Cantidad = 1,
+                Subtotal = 5000
+            });
+            await context.SaveChangesAsync();
+
+            var controller = new DetallePedidoController(context);
+            var result = await controller.GetDetalles();
+
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var detalles = Assert.IsAssignableFrom<IEnumerable<DetallePedido>>(okResult.Value);
+            var detalle = detalles.First();
+
+            Assert.NotNull(detalle.Pedido);
+            Assert.NotNull(detalle.Producto);
+            Assert.Equal("Cerveza", detalle.Producto.Nombre);
+        }
     }
 }

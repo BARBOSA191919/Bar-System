@@ -26,3 +26,31 @@ reportgenerator `
   -reports:"TestResults\*\coverage.cobertura.xml" `
   -targetdir:"coverage-report-clean" `
   -reporttypes:Html
+
+
+
+  #despues este comando para generar el xml: 
+
+  dotnet test --collect:"XPlat Code Coverage" --results-directory:"TestResults"
+
+  #despues este comando para generar el html del coverage:
+
+  reportgenerator `
+  -reports:"TestResults\*\coverage.cobertura.xml" `
+  -targetdir:"coverage-report-clean" `
+  -reporttypes:Html `
+  -assemblyfilters:"+BarSystem.Api.Controllers,+BarSystem.Domain.Entities,+BarSystem.Application" `
+  -classfilters:"-*.Migrations*;-*Program*;-*Startup*;-*obj*;-*Properties*;-*wwwroot*"
+
+  # otra version mas limpia:
+  # Limpia
+Remove-Item -Recurse -Force TestResults, coverage-report-end -ErrorAction SilentlyContinue
+
+# Ejecuta con el archivo de configuración
+dotnet test --collect:"XPlat Code Coverage" --settings:coverlet.runsettings --results-directory ./TestResults
+
+# Genera el reporte
+reportgenerator -reports:".\TestResults\**\coverage.cobertura.xml" -targetdir:"coverage-report-end" -reporttypes:Html
+
+# Abre
+Start-Process "coverage-report-end\index.html"

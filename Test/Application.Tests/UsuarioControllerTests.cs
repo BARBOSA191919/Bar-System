@@ -39,6 +39,11 @@ namespace Application.Tests
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal("Usuario registrado con éxito.", okResult.Value);
+
+            // Verificar que el usuario registrado tiene el Rol por defecto
+            var usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            Assert.NotNull(usuario);
+            Assert.Equal("User", usuario.Rol); // Cubre la línea de Rol
         }
 
         [Fact]
